@@ -1,7 +1,18 @@
 from flask import Flask
 from config import Config
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config.from_object(Config)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
-from app import routes
+# Most linters will complain about this from statement being this far down
+# It is intentionally that way since it needs to call/use data that is above it
+# Therefore,putting this here is required to prevent program issues with being
+# unable to find data.
+from app import routes, models
+
+
+
